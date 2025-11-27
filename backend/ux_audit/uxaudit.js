@@ -190,6 +190,66 @@ async function runUxAudit(page, deviceType) {
     auditResults.readability.status = fleschScore >= readabilityLimitMin ? 'pass' : 'fail';
     auditResults.readability.details = `Flesch Reading Ease: ${fleschScore.toFixed(2)}. Target > ${readabilityLimitMin}.`;
 
+    // 10. Navigation Depth (≤3 clicks to key pages)
+    const navDepth = await page.evaluate(() => {
+        // 1. Find navigation elements
+        const navElements = Array.from(document.querySelectorAll('nav, header, [role="navigation"]'));
+        let links = [];
+
+        if (navElements.length > 0) {
+            navElements.forEach(nav => {
+                const navLinks = Array.from(nav.querySelectorAll('a[href]'));
+                links = links.concat(navLinks);
+            });
+        } else {
+            // Fallback: check all links if no explicit nav found (less ideal but safer)
+            links = Array.from(document.querySelectorAll('a[href]'));
+        }
+
+        // Filter for internal links only
+        const internalLinks = links.filter(link => {
+            return link.hostname === window.location.hostname;
+        });
+
+        if (internalLinks.length === 0) return { score: 100, details: 'No internal navigation links found.' };
+
+        // Calculate depth
+        let shallowLinksCount = 0;
+        const totalLinks = internalLinks.length;
+        const linkDetails = [];
+
+        internalLinks.forEach(link => {
+            const path = link.pathname;
+            // Remove leading/trailing slashes and split
+            const segments = path.replace(/^\/|\/$/g, '').split('/').filter(s => s.length > 0);
+            const depth = segments.length;
+
+            if (depth <= 3) {
+                shallowLinksCount++;
+            }
+
+            linkDetails.push({
+                text: link.innerText.substring(0, 30) || 'No Text',
+                href: path,
+                depth: depth
+            });
+        });
+
+        const percentage = (shallowLinksCount / totalLinks) * 100;
+        return {
+            score: percentage,
+            details: `${shallowLinksCount} out of ${totalLinks} navigation links are ≤3 clicks deep (${percentage.toFixed(1)}%).`,
+            links: linkDetails
+        };
+    });
+
+    auditResults.navigationDepth = {
+        score: navDepth.score,
+        status: navDepth.score >= 80 ? 'pass' : 'fail', // Threshold: 80% of links should be shallow
+        details: navDepth.details,
+        links: navDepth.links // Pass the detailed list to the frontend
+    };
+
     // Calculate Overall Score (Simple weighted average)
     let totalScore = 0;
     let maxScore = 0;
@@ -202,7 +262,8 @@ async function runUxAudit(page, deviceType) {
         viewport: 3,
         horizontalScroll: 3,
         stickyHeader: 1,
-        readability: 2
+        readability: 2,
+        navigationDepth: 2
     };
 
     // Helper to add score
@@ -218,6 +279,7 @@ async function runUxAudit(page, deviceType) {
     addScore('horizontalScroll', auditResults.horizontalScroll.status === 'pass');
     addScore('stickyHeader', auditResults.stickyHeader.status === 'pass');
     addScore('readability', auditResults.readability.status === 'pass');
+    addScore('navigationDepth', auditResults.navigationDepth.status === 'pass');
 
     auditResults.overallScore = Math.round((totalScore / maxScore) * 100);
 

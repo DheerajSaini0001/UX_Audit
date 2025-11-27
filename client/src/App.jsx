@@ -168,6 +168,55 @@ function App() {
                                                         </span>
                                                         <p className="text-xs text-gray-500 mt-1">{scrape.auditResults.readability.details}</p>
                                                     </div>
+                                                    {scrape.auditResults.navigationDepth && (
+                                                        <div className="bg-gray-50 p-3 rounded md:col-span-2">
+                                                            <span className="font-semibold">Navigation Depth:</span>
+                                                            <span className={`ml-2 ${scrape.auditResults.navigationDepth.status === 'pass' ? 'text-green-600' : 'text-red-600'}`}>
+                                                                {scrape.auditResults.navigationDepth.status.toUpperCase()}
+                                                            </span>
+                                                            <p className="text-xs text-gray-500 mt-1 mb-2">{scrape.auditResults.navigationDepth.details}</p>
+
+                                                            {scrape.auditResults.navigationDepth.links && scrape.auditResults.navigationDepth.links.length > 0 && (
+                                                                <div className="mt-2">
+                                                                    <p className="text-xs font-semibold text-gray-600 mb-1">Link Structure:</p>
+                                                                    <div className="max-h-40 overflow-y-auto border border-gray-200 rounded bg-white">
+                                                                        <table className="min-w-full divide-y divide-gray-200">
+                                                                            <thead className="bg-gray-50">
+                                                                                <tr>
+                                                                                    <th scope="col" className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Text</th>
+                                                                                    <th scope="col" className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Path</th>
+                                                                                    <th scope="col" className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Depth</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody className="bg-white divide-y divide-gray-200">
+                                                                                {scrape.auditResults.navigationDepth.links.map((link, idx) => (
+                                                                                    <tr key={idx} className={link.depth <= 3 ? 'bg-green-50' : 'bg-red-50'}>
+                                                                                        <td className="px-3 py-2 whitespace-nowrap text-xs text-gray-500">{link.text}</td>
+                                                                                        <td className="px-3 py-2 whitespace-nowrap text-xs text-gray-500">
+                                                                                            <div className="flex items-center flex-wrap gap-1">
+                                                                                                <span className="font-medium text-gray-600">Home</span>
+                                                                                                {link.href === '/' ? null : (
+                                                                                                    link.href.split('/').filter(Boolean).map((segment, i) => (
+                                                                                                        <React.Fragment key={i}>
+                                                                                                            <span className="text-gray-400">→</span>
+                                                                                                            <span className="bg-white px-1 rounded border border-gray-200 text-gray-700">
+                                                                                                                {segment}
+                                                                                                            </span>
+                                                                                                        </React.Fragment>
+                                                                                                    ))
+                                                                                                )}
+                                                                                            </div>
+                                                                                        </td>
+                                                                                        <td className="px-3 py-2 whitespace-nowrap text-xs text-gray-900 font-semibold">{link.depth}</td>
+                                                                                    </tr>
+                                                                                ))}
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </div>
                                         )}
