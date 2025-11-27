@@ -57,6 +57,19 @@ app.post('/api/scrape', async (req, res) => {
     }
 
     try {
+        // Check for recent existing scrape (within last 30 seconds) to prevent duplicates
+        const thirtySecondsAgo = new Date(Date.now() - 30 * 1000);
+        const existingScrape = await ScrapeData.findOne({
+            url,
+            device,
+            scrapedAt: { $gte: thirtySecondsAgo }
+        });
+
+        if (existingScrape) {
+            console.log(`Returning recent existing scrape for ${url} (${device})`);
+            return res.status(200).json({ message: 'Scrape retrieved from cache', data: existingScrape });
+        }
+
         console.log(`Starting worker for ${url} (${device})...`);
 
         // Use worker instead of direct call
@@ -71,7 +84,7 @@ app.post('/api/scrape', async (req, res) => {
         });
 
         await newData.save();
-        console.log('Scrape saved successfully');
+        console.log(`Scrape saved successfully. Title: "${title}"`);
 
         res.status(201).json({ message: 'Scrape successful', data: newData });
     } catch (error) {

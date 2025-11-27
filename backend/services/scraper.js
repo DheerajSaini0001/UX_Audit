@@ -21,7 +21,12 @@ const scrapePage = async (url, deviceType) => {
 
         await page.goto(url, { waitUntil: 'networkidle2', timeout: 60000 });
 
-        const title = await page.title();
+        let title = await page.title();
+        if (!title || title.trim() === '') {
+            title = url; // Fallback to URL if title is missing
+        }
+        console.log(`Extracted title: "${title}"`);
+
         const htmlContent = await page.content();
 
         // Run UX Audit
