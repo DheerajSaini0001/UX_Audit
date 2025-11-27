@@ -13,6 +13,7 @@ const scrapeDataSchema = new mongoose.Schema({
   scrapedAt: {
     type: Date,
     default: Date.now,
+    expires: 10800, // 3 hours in seconds
   },
   title: {
     type: String,

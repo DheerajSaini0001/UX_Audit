@@ -5,7 +5,7 @@ const scrapePage = async (url, deviceType) => {
     let browser;
     try {
         browser = await puppeteer.launch({
-            headless: "new",
+            headless: "false",
             args: ['--no-sandbox', '--disable-setuid-sandbox'],
         });
         const page = await browser.newPage();

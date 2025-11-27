@@ -22,6 +22,33 @@ mongoose.connect(MONGODB_URI)
 // Health Check
 app.get('/health', (req, res) => res.send('Server is running'));
 
+const { Worker } = require('worker_threads');
+const path = require('path');
+
+// Helper to run scrape in a worker
+const runScrapeWorker = (url, device) => {
+    return new Promise((resolve, reject) => {
+        const worker = new Worker(path.join(__dirname, 'services', 'worker.js'), {
+            workerData: { url, device }
+        });
+
+        worker.on('message', (message) => {
+            if (message.status === 'success') {
+                resolve(message.data);
+            } else {
+                reject(new Error(message.error));
+            }
+        });
+
+        worker.on('error', reject);
+        worker.on('exit', (code) => {
+            if (code !== 0) {
+                reject(new Error(`Worker stopped with exit code ${code}`));
+            }
+        });
+    });
+};
+
 app.post('/api/scrape', async (req, res) => {
     const { url, device } = req.body;
 
@@ -30,8 +57,10 @@ app.post('/api/scrape', async (req, res) => {
     }
 
     try {
-        console.log(`Scraping ${url} for ${device}...`);
-        const { title, htmlContent, auditResults } = await scrapePage(url, device);
+        console.log(`Starting worker for ${url} (${device})...`);
+
+        // Use worker instead of direct call
+        const { title, htmlContent, auditResults } = await runScrapeWorker(url, device);
 
         const newData = new ScrapeData({
             url,
