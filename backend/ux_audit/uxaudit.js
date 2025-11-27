@@ -62,6 +62,7 @@ async function runUxAudit(page, deviceType) {
         readability: { score: 0, status: 'pass', details: '' },
         navigationDepth: { score: 0, status: 'pass', details: '' },
         intrusiveInterstitials: { score: 0, status: 'pass', details: '' },
+        imageStability: { score: 0, status: 'pass', details: '' },
         overallScore: 0,
     };
 
@@ -519,6 +520,48 @@ async function runUxAudit(page, deviceType) {
         details: interstitialCheck.details
     };
 
+    // 12. Image Ratio Consistency (Prevent Layout Shifts)
+    const imageStability = await page.evaluate(() => {
+        const images = Array.from(document.querySelectorAll('img'));
+        const total = images.length;
+        const issues = [];
+
+        images.forEach(img => {
+            const hasWidth = img.hasAttribute('width');
+            const hasHeight = img.hasAttribute('height');
+            const style = window.getComputedStyle(img);
+            const hasAspectRatio = style.aspectRatio !== 'auto';
+
+            // Pass if (width AND height) OR aspect-ratio is set
+            if (!((hasWidth && hasHeight) || hasAspectRatio)) {
+                issues.push({
+                    src: img.src || 'No Source',
+                    details: 'Missing explicit width/height or aspect-ratio'
+                });
+            }
+        });
+
+        return {
+            total: total,
+            issues: issues.slice(0, 10) // Limit to top 10
+        };
+    });
+
+    const imageScore = imageStability.total > 0
+        ? Math.round(((imageStability.total - imageStability.issues.length) / imageStability.total) * 100)
+        : 100;
+
+    auditResults.imageStability = {
+        score: imageScore,
+        status: imageScore >= 90 ? 'pass' : 'fail',
+        meta: {
+            total: imageStability.total,
+            passed: imageStability.total - imageStability.issues.length,
+            failed: imageStability.issues.length
+        },
+        details: imageStability.issues
+    };
+
     // Calculate Overall Score (Weighted Average)
     let totalScore = 0;
     let maxScore = 0;
@@ -533,7 +576,8 @@ async function runUxAudit(page, deviceType) {
         stickyHeader: 1,
         readability: 2,
         navigationDepth: 2,
-        intrusiveInterstitials: 3
+        intrusiveInterstitials: 3,
+        imageStability: 2
     };
 
     // Helper to add score
@@ -571,6 +615,7 @@ async function runUxAudit(page, deviceType) {
 
     addScore('navigationDepth', auditResults.navigationDepth.score);
     addScore('intrusiveInterstitials', auditResults.intrusiveInterstitials.score);
+    addScore('imageStability', auditResults.imageStability.score);
 
     auditResults.overallScore = Math.round((totalScore / maxScore) * 100);
 
