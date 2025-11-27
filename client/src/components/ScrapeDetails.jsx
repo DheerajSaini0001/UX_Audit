@@ -281,6 +281,40 @@ const ScrapeDetails = ({ scrape }) => {
                                 <p className="text-xs text-gray-600">{scrape.auditResults.intrusiveInterstitials.details}</p>
                             </div>
                         )}
+
+                        {/* Image Ratio Consistency */}
+                        {scrape.auditResults.imageStability && (
+                            <div className="bg-gray-50 p-4 rounded-lg">
+                                <div className="flex justify-between items-start mb-2">
+                                    <span className="font-semibold">Image Ratio Consistency</span>
+                                    <span className={`text-xs font-bold px-2 py-1 rounded ${scrape.auditResults.imageStability.score >= 90 ? 'bg-green-100 text-green-800' : scrape.auditResults.imageStability.score >= 50 ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800'}`}>
+                                        Score: {scrape.auditResults.imageStability.score}/100
+                                    </span>
+                                </div>
+
+                                {scrape.auditResults.imageStability.meta && (
+                                    <p className="text-xs text-gray-600 mb-2">
+                                        {scrape.auditResults.imageStability.meta.passed} passed out of {scrape.auditResults.imageStability.meta.total} images.
+                                    </p>
+                                )}
+
+                                {scrape.auditResults.imageStability.details.length > 0 && (
+                                    <div className="mt-2">
+                                        <p className="text-xs text-red-600 font-semibold mb-1">{scrape.auditResults.imageStability.details.length} images missing dimensions:</p>
+                                        <ul className="list-disc pl-4 text-xs text-gray-500 max-h-32 overflow-y-auto">
+                                            {scrape.auditResults.imageStability.details.map((issue, idx) => (
+                                                <li key={idx} className="truncate">
+                                                    {issue.src}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
+                                {scrape.auditResults.imageStability.details.length === 0 && scrape.auditResults.imageStability.meta.total > 0 && (
+                                    <p className="text-xs text-green-600">All images have explicit dimensions.</p>
+                                )}
+                            </div>
+                        )}
                     </div>
                 </div>
             )}
