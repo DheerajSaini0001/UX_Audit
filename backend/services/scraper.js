@@ -1,11 +1,12 @@
 const puppeteer = require('puppeteer');
 const { runUxAudit } = require('../ux_audit/uxaudit');
+const { captureScreenshot } = require('./screenshot');
 
 const scrapePage = async (url, deviceType) => {
     let browser;
     try {
         browser = await puppeteer.launch({
-            headless: "false",
+            headless: "new", // Updated to "new" to avoid warnings
             args: ['--no-sandbox', '--disable-setuid-sandbox'],
         });
         const page = await browser.newPage();
@@ -34,7 +35,12 @@ const scrapePage = async (url, deviceType) => {
         const auditResults = await runUxAudit(page, deviceType);
         console.log('UX Audit complete.');
 
-        return { title, htmlContent, auditResults };
+        // Take Screenshot (Dynamic based on deviceType)
+        console.log(`Taking ${deviceType} screenshot...`);
+        const screenshotUrl = await captureScreenshot(url, deviceType);
+        console.log('Screenshot URL:', screenshotUrl);
+
+        return { title, htmlContent, auditResults, screenshotUrl };
     } catch (error) {
         console.error('Scraping error:', error);
         throw error;

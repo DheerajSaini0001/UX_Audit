@@ -71,7 +71,7 @@ app.post('/api/scrape', async (req, res) => {
         console.log(`Starting worker for ${url} (${device})...`);
 
         // Use worker instead of direct call
-        const { title, htmlContent, auditResults } = await runScrapeWorker(url, device);
+        const { title, htmlContent, auditResults, screenshotUrl } = await runScrapeWorker(url, device);
 
         const newData = new ScrapeData({
             url,
@@ -79,6 +79,7 @@ app.post('/api/scrape', async (req, res) => {
             title,
             htmlContent,
             auditResults,
+            screenshotUrl,
         });
 
         await newData.save();

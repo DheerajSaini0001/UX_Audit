@@ -25,6 +25,9 @@ const scrapeDataSchema = new mongoose.Schema({
   auditResults: {
     type: Object, // Storing the full audit object
   },
+  screenshotUrl: {
+    type: String,
+  },
 });
 
 module.exports = mongoose.model('ScrapeData', scrapeDataSchema);

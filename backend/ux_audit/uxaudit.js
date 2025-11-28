@@ -63,6 +63,7 @@ async function runUxAudit(page, deviceType) {
         navigationDepth: { score: 0, status: 'pass', details: '' },
         intrusiveInterstitials: { score: 0, status: 'pass', details: '' },
         imageStability: { score: 0, status: 'pass', details: '' },
+
         overallScore: 0,
     };
 
@@ -562,6 +563,10 @@ async function runUxAudit(page, deviceType) {
         details: imageStability.issues
     };
 
+
+
+
+
     // Calculate Overall Score (Weighted Average)
     let totalScore = 0;
     let maxScore = 0;
@@ -577,49 +582,51 @@ async function runUxAudit(page, deviceType) {
         readability: 2,
         navigationDepth: 2,
         intrusiveInterstitials: 3,
-        imageStability: 2
-    };
+        imageStability: 2,
+        
+};
 
-    // Helper to add score
-    const addScore = (key, score) => {
-        maxScore += weights[key] * 100;
-        totalScore += weights[key] * score;
-    };
+// Helper to add score
+const addScore = (key, score) => {
+    maxScore += weights[key] * 100;
+    totalScore += weights[key] * score;
+};
 
-    // Calculate scores for binary checks (0 or 100)
-    const viewportScore = auditResults.viewport.status === 'pass' ? 100 : 0;
-    const scrollScore = auditResults.horizontalScroll.status === 'pass' ? 100 : 0;
-    const headerScore = auditResults.stickyHeader.status === 'pass' ? 100 : 0;
+// Calculate scores for binary checks (0 or 100)
+const viewportScore = auditResults.viewport.status === 'pass' ? 100 : 0;
+const scrollScore = auditResults.horizontalScroll.status === 'pass' ? 100 : 0;
+const headerScore = auditResults.stickyHeader.status === 'pass' ? 100 : 0;
 
-    // Map CLS to 0-100 score (0.1 = 90, 0.25 = 50, >0.25 = 0)
-    let clsScore = 100;
-    if (auditResults.cls.score > 0.25) clsScore = 0;
-    else if (auditResults.cls.score > 0.1) clsScore = 50 + ((0.25 - auditResults.cls.score) / 0.15) * 40; // Linear interpolation between 50 and 90
-    else clsScore = 90 + ((0.1 - auditResults.cls.score) / 0.1) * 10; // Linear interpolation between 90 and 100
+// Map CLS to 0-100 score (0.1 = 90, 0.25 = 50, >0.25 = 0)
+let clsScore = 100;
+if (auditResults.cls.score > 0.25) clsScore = 0;
+else if (auditResults.cls.score > 0.1) clsScore = 50 + ((0.25 - auditResults.cls.score) / 0.15) * 40; // Linear interpolation between 50 and 90
+else clsScore = 90 + ((0.1 - auditResults.cls.score) / 0.1) * 10; // Linear interpolation between 90 and 100
 
-    // Use actual scores for proportional metrics
-    addScore('cls', clsScore);
-    addScore('tapTargets', auditResults.tapTargets.score);
-    addScore('textSize', auditResults.textSize.score);
-    addScore('viewport', viewportScore);
-    addScore('horizontalScroll', scrollScore);
-    addScore('stickyHeader', headerScore);
-    addScore('readability', auditResults.readability.score); // Use Flesch score directly (clamped 0-100 usually, but can be negative. Let's clamp it)
+// Use actual scores for proportional metrics
+addScore('cls', clsScore);
+addScore('tapTargets', auditResults.tapTargets.score);
+addScore('textSize', auditResults.textSize.score);
+addScore('viewport', viewportScore);
+addScore('horizontalScroll', scrollScore);
+addScore('stickyHeader', headerScore);
+addScore('readability', auditResults.readability.score); // Use Flesch score directly (clamped 0-100 usually, but can be negative. Let's clamp it)
 
-    // Clamp readability score for overall calculation
-    const clampedReadability = Math.max(0, Math.min(100, auditResults.readability.score));
-    // Re-add readability with clamped score
-    maxScore -= weights['readability'] * 100; // Remove previous add
-    totalScore -= weights['readability'] * auditResults.readability.score; // Remove previous add
-    addScore('readability', clampedReadability);
+// Clamp readability score for overall calculation
+const clampedReadability = Math.max(0, Math.min(100, auditResults.readability.score));
+// Re-add readability with clamped score
+maxScore -= weights['readability'] * 100; // Remove previous add
+totalScore -= weights['readability'] * auditResults.readability.score; // Remove previous add
+addScore('readability', clampedReadability);
 
-    addScore('navigationDepth', auditResults.navigationDepth.score);
-    addScore('intrusiveInterstitials', auditResults.intrusiveInterstitials.score);
-    addScore('imageStability', auditResults.imageStability.score);
+addScore('navigationDepth', auditResults.navigationDepth.score);
+addScore('intrusiveInterstitials', auditResults.intrusiveInterstitials.score);
+addScore('imageStability', auditResults.imageStability.score);
 
-    auditResults.overallScore = Math.round((totalScore / maxScore) * 100);
 
-    return auditResults;
+auditResults.overallScore = Math.round((totalScore / maxScore) * 100);
+
+return auditResults;
 }
 
 module.exports = { runUxAudit };
