@@ -166,7 +166,7 @@ const Report = () => {
                         <div className="bg-white dark:bg-white/5 dark:backdrop-blur-md border border-gray-200 dark:border-white/10 shadow-lg dark:shadow-2xl rounded-2xl overflow-hidden animate-fade-in-up transition-colors duration-300">
                             <ScrapeDetails scrape={currentScrape} />
                         </div>
-                    ) : (
+                    ) : !error && (
                         <div className="text-center py-20 text-gray-500 dark:text-purple-200/50 animate-fade-in-up">
                             <p className="text-xl font-light">Please enter a URL to generate a report.</p>
                         </div>

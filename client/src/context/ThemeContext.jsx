@@ -21,17 +21,13 @@ export const ThemeProvider = ({ children }) => {
     useEffect(() => {
         const root = window.document.documentElement;
 
-        console.log('Theme changing to:', theme); // Debug log
-
         // Remove both to prevent conflicts
         root.classList.remove('light', 'dark');
 
         if (theme === 'dark') {
             root.classList.add('dark');
-            console.log('Added dark class to html'); // Debug log
         } else {
             root.classList.add('light');
-            console.log('Added light class to html'); // Debug log
         }
 
         localStorage.setItem('theme', theme);

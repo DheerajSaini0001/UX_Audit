@@ -68,12 +68,42 @@ const ScrapeDetails = ({ scrape, loading }) => {
 
             {scrape.auditResults && (
                 <div className="border-t border-gray-200 dark:border-white/10 pt-8">
+
+                    {/* Screenshot Card - Moved to Top */}
+                    <div className="mb-8 bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 p-5 rounded-xl hover:bg-gray-50 dark:hover:bg-white/10 transition-colors duration-200 shadow-sm dark:shadow-none flex flex-col items-center">
+                        <h5 className="font-semibold text-gray-900 dark:text-white mb-3 self-start capitalize">{device} Screenshot</h5>
+                        <div className="relative w-full max-w-sm h-64 bg-gray-100 dark:bg-black/20 rounded-lg overflow-hidden border border-gray-200 dark:border-white/10 group">
+                            {scrape.screenshotUrl ? (
+                                <>
+                                    <img
+                                        src={scrape.screenshotUrl}
+                                        alt={`${device} Screenshot`}
+                                        className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
+                                    />
+                                    <a
+                                        href={scrape.screenshotUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-white font-medium"
+                                    >
+                                        View Full Size
+                                    </a>
+                                </>
+                            ) : (
+                                <div className="w-full h-full flex flex-col items-center justify-center animate-pulse">
+                                    <div className="w-12 h-12 bg-gray-300 dark:bg-white/10 rounded-full mb-3"></div>
+                                    <div className="h-4 bg-gray-300 dark:bg-white/10 rounded w-1/2"></div>
+                                    <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">Screenshot not available</p>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
                     <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-6 flex items-center">
                         <span className="w-1 h-6 bg-gradient-to-b from-purple-500 to-pink-500 rounded-full mr-3"></span>
                         Audit Results
                     </h4>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
-
                         {/* CLS Card */}
                         <div className="bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 p-5 rounded-xl hover:bg-gray-50 dark:hover:bg-white/10 transition-colors duration-200 shadow-sm dark:shadow-none">
                             <div className="flex justify-between items-start mb-3">
@@ -318,6 +348,9 @@ const ScrapeDetails = ({ scrape, loading }) => {
                             )}
                         </div>
 
+
+
+                        {/* Screenshot Card */}
                     </div>
                 </div>
             )}
