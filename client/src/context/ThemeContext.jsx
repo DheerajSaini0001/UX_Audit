@@ -19,7 +19,7 @@ export const ThemeProvider = ({ children }) => {
     useEffect(() => {
         const root = window.document.documentElement;
 
-        // Remove both classes first
+        // Remove both classes first to ensure clean state
         root.classList.remove('light', 'dark');
 
         // Add the current theme class
@@ -27,10 +27,16 @@ export const ThemeProvider = ({ children }) => {
 
         // Save to localStorage
         localStorage.setItem('theme', theme);
+
+        console.log(`Theme updated to: ${theme}`);
     }, [theme]);
 
     const toggleTheme = () => {
-        setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
+        setTheme((prev) => {
+            const newTheme = prev === 'dark' ? 'light' : 'dark';
+            console.log(`Toggling theme from ${prev} to ${newTheme}`);
+            return newTheme;
+        });
     };
 
     return (

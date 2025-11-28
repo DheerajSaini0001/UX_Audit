@@ -8,7 +8,15 @@ const ScrapeForm = ({ onScrape }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-        await onScrape(url, device);
+
+        let formattedUrl = url;
+        // Auto-prepend https:// if protocol is missing
+        if (!url.match(/^https?:\/\//i)) {
+            formattedUrl = `https://${url}`;
+            setUrl(formattedUrl); // Update input to show the change
+        }
+
+        await onScrape(formattedUrl, device);
         setLoading(false);
     };
 
@@ -20,11 +28,11 @@ const ScrapeForm = ({ onScrape }) => {
                     <label className="block text-sm font-medium text-gray-700 dark:text-purple-200 mb-1 ml-1 transition-colors duration-300">Website URL</label>
                     <div className="relative rounded-md shadow-sm">
                         <input
-                            type="url"
+                            type="text" // Changed from 'url' to 'text' to allow input without protocol
                             required
                             value={url}
                             onChange={(e) => setUrl(e.target.value)}
-                            placeholder="https://example.com"
+                            placeholder="example.com"
                             className="block w-full px-4 py-3 bg-gray-50 dark:bg-white/5 border border-gray-300 dark:border-purple-300/30 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-purple-300/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 backdrop-blur-sm"
                         />
                     </div>
@@ -35,8 +43,8 @@ const ScrapeForm = ({ onScrape }) => {
                     <div className="grid grid-cols-2 gap-4">
                         <label
                             className={`cursor-pointer relative rounded-xl px-4 py-3 flex items-center justify-center space-x-2 border transition-all duration-200 ${device === 'desktop'
-                                    ? 'bg-purple-600 border-transparent shadow-lg shadow-purple-900/50'
-                                    : 'bg-gray-50 dark:bg-white/5 border-gray-300 dark:border-purple-300/30 hover:bg-gray-100 dark:hover:bg-white/10'
+                                ? 'bg-purple-600 border-transparent shadow-lg shadow-purple-900/50'
+                                : 'bg-gray-50 dark:bg-white/5 border-gray-300 dark:border-purple-300/30 hover:bg-gray-100 dark:hover:bg-white/10'
                                 }`}
                         >
                             <input
@@ -53,8 +61,8 @@ const ScrapeForm = ({ onScrape }) => {
 
                         <label
                             className={`cursor-pointer relative rounded-xl px-4 py-3 flex items-center justify-center space-x-2 border transition-all duration-200 ${device === 'mobile'
-                                    ? 'bg-purple-600 border-transparent shadow-lg shadow-purple-900/50'
-                                    : 'bg-gray-50 dark:bg-white/5 border-gray-300 dark:border-purple-300/30 hover:bg-gray-100 dark:hover:bg-white/10'
+                                ? 'bg-purple-600 border-transparent shadow-lg shadow-purple-900/50'
+                                : 'bg-gray-50 dark:bg-white/5 border-gray-300 dark:border-purple-300/30 hover:bg-gray-100 dark:hover:bg-white/10'
                                 }`}
                         >
                             <input

@@ -75,7 +75,7 @@ const ScrapeDetails = ({ scrape, loading }) => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
 
                         {/* CLS Card */}
-                        <div className="bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 p-5 rounded-xl hover:bg-gray-100 dark:hover:bg-white/10 transition-colors duration-200">
+                        <div className="bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 p-5 rounded-xl hover:bg-gray-50 dark:hover:bg-white/10 transition-colors duration-200 shadow-sm dark:shadow-none">
                             <div className="flex justify-between items-start mb-3">
                                 <h5 className="font-semibold text-gray-900 dark:text-white">Layout Shift (CLS)</h5>
                                 <span className={`font-bold ${getScoreColor(clsScore)}`}>
@@ -91,7 +91,7 @@ const ScrapeDetails = ({ scrape, loading }) => {
                         </div>
 
                         {/* Tap Targets Card */}
-                        <div className="bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 p-5 rounded-xl hover:bg-gray-100 dark:hover:bg-white/10 transition-colors duration-200">
+                        <div className="bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 p-5 rounded-xl hover:bg-gray-50 dark:hover:bg-white/10 transition-colors duration-200 shadow-sm dark:shadow-none">
                             <div className="flex justify-between items-start mb-3">
                                 <h5 className="font-semibold text-gray-900 dark:text-white">Tap Targets</h5>
                                 <span className={`font-bold ${getScoreColor(auditResults.tapTargets?.score || 0)}`}>
@@ -120,7 +120,7 @@ const ScrapeDetails = ({ scrape, loading }) => {
                         </div>
 
                         {/* Text Size Card */}
-                        <div className="bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 p-5 rounded-xl hover:bg-gray-100 dark:hover:bg-white/10 transition-colors duration-200">
+                        <div className="bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 p-5 rounded-xl hover:bg-gray-50 dark:hover:bg-white/10 transition-colors duration-200 shadow-sm dark:shadow-none">
                             <div className="flex justify-between items-start mb-3">
                                 <h5 className="font-semibold text-gray-900 dark:text-white">Text Size</h5>
                                 <span className={`font-bold ${getScoreColor(auditResults.textSize?.score || 0)}`}>
@@ -149,7 +149,7 @@ const ScrapeDetails = ({ scrape, loading }) => {
                         </div>
 
                         {/* Viewport Card */}
-                        <div className="bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 p-5 rounded-xl hover:bg-gray-100 dark:hover:bg-white/10 transition-colors duration-200">
+                        <div className="bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 p-5 rounded-xl hover:bg-gray-50 dark:hover:bg-white/10 transition-colors duration-200 shadow-sm dark:shadow-none">
                             <h5 className="font-semibold text-gray-900 dark:text-white mb-2">Viewport</h5>
                             <div className="flex items-center mb-3">
                                 <span className={`text-xs font-bold px-2 py-1 rounded ${auditResults.viewport?.status === 'pass' ? 'bg-green-100 text-green-800 dark:bg-green-500/20 dark:text-green-300' : 'bg-red-100 text-red-800 dark:bg-red-500/20 dark:text-red-300'}`}>
@@ -160,7 +160,7 @@ const ScrapeDetails = ({ scrape, loading }) => {
                         </div>
 
                         {/* Horizontal Scroll Card */}
-                        <div className="bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 p-5 rounded-xl hover:bg-gray-100 dark:hover:bg-white/10 transition-colors duration-200">
+                        <div className="bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 p-5 rounded-xl hover:bg-gray-50 dark:hover:bg-white/10 transition-colors duration-200 shadow-sm dark:shadow-none">
                             <h5 className="font-semibold text-gray-900 dark:text-white mb-2">Horizontal Scroll</h5>
                             <div className="flex items-center mb-3">
                                 <span className={`text-xs font-bold px-2 py-1 rounded ${auditResults.horizontalScroll?.status === 'pass' ? 'bg-green-100 text-green-800 dark:bg-green-500/20 dark:text-green-300' : 'bg-red-100 text-red-800 dark:bg-red-500/20 dark:text-red-300'}`}>
@@ -171,7 +171,7 @@ const ScrapeDetails = ({ scrape, loading }) => {
                         </div>
 
                         {/* Sticky Header Card */}
-                        <div className="bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 p-5 rounded-xl hover:bg-gray-100 dark:hover:bg-white/10 transition-colors duration-200">
+                        <div className="bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 p-5 rounded-xl hover:bg-gray-50 dark:hover:bg-white/10 transition-colors duration-200 shadow-sm dark:shadow-none">
                             <h5 className="font-semibold text-gray-900 dark:text-white mb-2">Sticky Header</h5>
                             <div className="flex items-center mb-3">
                                 <span className={`text-xs font-bold px-2 py-1 rounded ${auditResults.stickyHeader?.status === 'pass' ? 'bg-green-100 text-green-800 dark:bg-green-500/20 dark:text-green-300' : 'bg-red-100 text-red-800 dark:bg-red-500/20 dark:text-red-300'}`}>
@@ -182,7 +182,7 @@ const ScrapeDetails = ({ scrape, loading }) => {
                         </div>
 
                         {/* Readability Card */}
-                        <div className="bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 p-5 rounded-xl hover:bg-gray-100 dark:hover:bg-white/10 transition-colors duration-200 md:col-span-2">
+                        <div className="bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 p-5 rounded-xl hover:bg-gray-50 dark:hover:bg-white/10 transition-colors duration-200 md:col-span-2 shadow-sm dark:shadow-none">
                             <div className="flex justify-between items-start mb-3">
                                 <h5 className="font-semibold text-gray-900 dark:text-white">Content Readability</h5>
                                 <span className={`font-bold ${getScoreColor(auditResults.readability?.score || 0)}`}>
@@ -190,15 +190,15 @@ const ScrapeDetails = ({ scrape, loading }) => {
                                 </span>
                             </div>
                             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
-                                <div className="bg-white dark:bg-black/20 p-3 rounded-lg border border-gray-100 dark:border-white/5">
+                                <div className="bg-gray-50 dark:bg-black/20 p-3 rounded-lg border border-gray-100 dark:border-white/5">
                                     <span className="block text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">Flesch Score</span>
                                     <span className="text-lg font-bold text-gray-900 dark:text-white">{auditResults.readability?.score?.toFixed(1) || 'N/A'}</span>
                                 </div>
-                                <div className="bg-white dark:bg-black/20 p-3 rounded-lg border border-gray-100 dark:border-white/5">
+                                <div className="bg-gray-50 dark:bg-black/20 p-3 rounded-lg border border-gray-100 dark:border-white/5">
                                     <span className="block text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">Avg Sentence Length</span>
                                     <span className="text-lg font-bold text-gray-900 dark:text-white">{auditResults.readability?.meta?.overallStats?.ASL?.toFixed(1) || 'N/A'} words</span>
                                 </div>
-                                <div className="bg-white dark:bg-black/20 p-3 rounded-lg border border-gray-100 dark:border-white/5">
+                                <div className="bg-gray-50 dark:bg-black/20 p-3 rounded-lg border border-gray-100 dark:border-white/5">
                                     <span className="block text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">Avg Syllables/Word</span>
                                     <span className="text-lg font-bold text-gray-900 dark:text-white">{auditResults.readability?.meta?.overallStats?.ASW?.toFixed(2) || 'N/A'}</span>
                                 </div>
@@ -227,7 +227,7 @@ const ScrapeDetails = ({ scrape, loading }) => {
                         </div>
 
                         {/* Navigation Depth Card */}
-                        <div className="bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 p-5 rounded-xl hover:bg-gray-100 dark:hover:bg-white/10 transition-colors duration-200 md:col-span-2">
+                        <div className="bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 p-5 rounded-xl hover:bg-gray-50 dark:hover:bg-white/10 transition-colors duration-200 md:col-span-2 shadow-sm dark:shadow-none">
                             <h5 className="font-semibold text-gray-900 dark:text-white mb-2">Navigation Depth</h5>
                             <div className="flex items-center mb-3">
                                 <span className={`text-xs font-bold px-2 py-1 rounded ${auditResults.navigationDepth?.status === 'pass' ? 'bg-green-100 text-green-800 dark:bg-green-500/20 dark:text-green-300' : 'bg-red-100 text-red-800 dark:bg-red-500/20 dark:text-red-300'}`}>
@@ -239,9 +239,9 @@ const ScrapeDetails = ({ scrape, loading }) => {
                             {auditResults.navigationDepth?.links && auditResults.navigationDepth.links.length > 0 && (
                                 <div className="mt-3">
                                     <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-2">Link Structure:</p>
-                                    <div className="max-h-40 overflow-y-auto border border-gray-200 dark:border-white/10 rounded-lg bg-white dark:bg-black/20">
+                                    <div className="max-h-40 overflow-y-auto border border-gray-200 dark:border-white/10 rounded-lg bg-gray-50 dark:bg-black/20">
                                         <table className="min-w-full divide-y divide-gray-200 dark:divide-white/10">
-                                            <thead className="bg-gray-50 dark:bg-white/5">
+                                            <thead className="bg-gray-100 dark:bg-white/5">
                                                 <tr>
                                                     <th scope="col" className="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Text</th>
                                                     <th scope="col" className="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Path</th>
@@ -278,7 +278,7 @@ const ScrapeDetails = ({ scrape, loading }) => {
                         </div>
 
                         {/* Intrusive Interstitials */}
-                        <div className="bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 p-5 rounded-xl hover:bg-gray-100 dark:hover:bg-white/10 transition-colors duration-200">
+                        <div className="bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 p-5 rounded-xl hover:bg-gray-50 dark:hover:bg-white/10 transition-colors duration-200 shadow-sm dark:shadow-none">
                             <div className="flex justify-between items-start mb-3">
                                 <h5 className="font-semibold text-gray-900 dark:text-white">Intrusive Interstitials</h5>
                                 <span className={`font-bold ${getScoreColor(auditResults.intrusiveInterstitials?.score || 0)}`}>
@@ -295,7 +295,7 @@ const ScrapeDetails = ({ scrape, loading }) => {
                         </div>
 
                         {/* Image Ratio Consistency */}
-                        <div className="bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 p-5 rounded-xl hover:bg-gray-100 dark:hover:bg-white/10 transition-colors duration-200">
+                        <div className="bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 p-5 rounded-xl hover:bg-gray-50 dark:hover:bg-white/10 transition-colors duration-200 shadow-sm dark:shadow-none">
                             <div className="flex justify-between items-start mb-3">
                                 <h5 className="font-semibold text-gray-900 dark:text-white">Image Aspect Ratios</h5>
                                 <span className={`font-bold ${getScoreColor(auditResults.imageStability?.score || 0)}`}>
