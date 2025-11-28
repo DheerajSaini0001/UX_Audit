@@ -1,33 +1,39 @@
+// src/context/ThemeContext.jsx
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
 const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
-    // Check localStorage or system preference on initial load
     const [theme, setTheme] = useState(() => {
         if (typeof window !== 'undefined') {
             const savedTheme = localStorage.getItem('theme');
             if (savedTheme) {
                 return savedTheme;
             }
-            // Default to dark as it's the "premium" look
-            return 'dark';
+            // Check system preference
+            if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                return 'dark';
+            }
         }
-        return 'dark';
+        return 'dark'; // Default fallback
     });
 
     useEffect(() => {
         const root = window.document.documentElement;
 
-        // Tailwind only cares about the 'dark' class
-        // If theme is 'dark', add the class. If 'light', remove it.
+        console.log('Theme changing to:', theme); // Debug log
+
+        // Remove both to prevent conflicts
+        root.classList.remove('light', 'dark');
+
         if (theme === 'dark') {
             root.classList.add('dark');
+            console.log('Added dark class to html'); // Debug log
         } else {
-            root.classList.remove('dark');
+            root.classList.add('light');
+            console.log('Added light class to html'); // Debug log
         }
 
-        // Save to localStorage
         localStorage.setItem('theme', theme);
     }, [theme]);
 
