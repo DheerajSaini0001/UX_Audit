@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+// Ensure these paths match your project structure
 import Home from './pages/Home';
 import Report from './pages/Report';
 import { ThemeProvider } from './context/ThemeContext';

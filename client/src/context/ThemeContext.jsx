@@ -19,24 +19,20 @@ export const ThemeProvider = ({ children }) => {
     useEffect(() => {
         const root = window.document.documentElement;
 
-        // Remove both classes first to ensure clean state
-        root.classList.remove('light', 'dark');
-
-        // Add the current theme class
-        root.classList.add(theme);
+        // Tailwind only cares about the 'dark' class
+        // If theme is 'dark', add the class. If 'light', remove it.
+        if (theme === 'dark') {
+            root.classList.add('dark');
+        } else {
+            root.classList.remove('dark');
+        }
 
         // Save to localStorage
         localStorage.setItem('theme', theme);
-
-        console.log(`Theme updated to: ${theme}`);
     }, [theme]);
 
     const toggleTheme = () => {
-        setTheme((prev) => {
-            const newTheme = prev === 'dark' ? 'light' : 'dark';
-            console.log(`Toggling theme from ${prev} to ${newTheme}`);
-            return newTheme;
-        });
+        setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
     };
 
     return (

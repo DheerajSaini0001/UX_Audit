@@ -57,16 +57,14 @@ app.post('/api/scrape', async (req, res) => {
     }
 
     try {
-        // Check for recent existing scrape (within last 30 seconds) to prevent duplicates
-        const thirtySecondsAgo = new Date(Date.now() - 30 * 1000);
+        // Check for existing scrape in the database (within TTL)
         const existingScrape = await ScrapeData.findOne({
             url,
             device,
-            scrapedAt: { $gte: thirtySecondsAgo }
-        });
+        }).sort({ scrapedAt: -1 }); // Get the latest one
 
         if (existingScrape) {
-            console.log(`Returning recent existing scrape for ${url} (${device})`);
+            console.log(`Returning existing scrape for ${url} (${device})`);
             return res.status(200).json({ message: 'Scrape retrieved from cache', data: existingScrape });
         }
 
