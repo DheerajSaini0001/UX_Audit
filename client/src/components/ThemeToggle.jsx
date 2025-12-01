@@ -12,7 +12,7 @@ const ThemeToggle = () => {
                        bg-gray-200 text-gray-800 
                        dark:bg-gray-700 dark:text-yellow-300"
         >
-            {theme === 'dark' ? '🌙 Dark Mode' : '☀️ Light Mode'}
+            {theme === 'dark' ? '🌙' : '☀️'}
         </button>
     );
 };

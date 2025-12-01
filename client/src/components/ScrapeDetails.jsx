@@ -350,6 +350,33 @@ const ScrapeDetails = ({ scrape, loading }) => {
 
 
 
+                        {/* Navigation Discoverability Card */}
+                        <div className="bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 p-5 rounded-xl hover:bg-gray-50 dark:hover:bg-white/10 transition-colors duration-200 shadow-sm dark:shadow-none">
+                            <div className="flex justify-between items-start mb-3">
+                                <h5 className="font-semibold text-gray-900 dark:text-white">Nav Discoverability</h5>
+                                <span className={`font-bold ${getScoreColor(auditResults.navigationDiscoverability?.score || 0)}`}>
+                                    {auditResults.navigationDiscoverability?.score || 0}/100
+                                </span>
+                            </div>
+                            <div className="space-y-2">
+                                <div className="flex justify-between items-center">
+                                    <span className="text-sm text-gray-600 dark:text-gray-300">Hamburger Menu:</span>
+                                    <span className={`text-sm font-medium ${auditResults.navigationDiscoverability?.meta?.hamburger_present ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+                                        {auditResults.navigationDiscoverability?.meta?.hamburger_present ? 'Detected' : 'Missing'}
+                                    </span>
+                                </div>
+                                <div className="flex justify-between items-center">
+                                    <span className="text-sm text-gray-600 dark:text-gray-300">Search Bar:</span>
+                                    <span className={`text-sm font-medium ${auditResults.navigationDiscoverability?.meta?.search_present ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+                                        {auditResults.navigationDiscoverability?.meta?.search_present ? 'Detected' : 'Missing'}
+                                    </span>
+                                </div>
+                            </div>
+                            <p className="text-xs text-gray-500 dark:text-gray-400 mt-3">
+                                Checks for common navigation patterns like hamburger menus and search inputs.
+                            </p>
+                        </div>
+
                         {/* Screenshot Card */}
                     </div>
                 </div>
